@@ -1,0 +1,14 @@
+{
+  "name": "dcdp_v2",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "kjua": "^0.1.2",
+    "meteor-node-stubs": "^0.3.2",
+    "uport-connect": "^0.7.0",
+    "web3": "^1.0.0-beta.26"
+  }
+}

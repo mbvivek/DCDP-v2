@@ -1,0 +1,72 @@
+<template name="register">
+  <div class="center-block text-center" style="max-width: 800px;">
+    <form id="registerForm">
+      <legend>Register</legend>
+      <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+          <label for="qrc">Scan for Admin details</label>
+          <img id="qrc" width="90%" height="auto">
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+          <label for="registerForm_userName">Admin Name</label>
+          <input type="text" class="form-control" id="registerForm_adminName" value="" readonly required>
+        </div>
+        <div class="form-group">
+          <label for="registerForm_userPK">Admin Public Key</label>
+          <input type="text" class="form-control" id="registerForm_adminPK" value="" readonly required>
+        </div>
+        <div class="form-group">
+          <label for="registerForm_orgName">Organization Name</label>
+          <input type="text" class="form-control" id="registerForm_orgName" placeholder="Name of your organization" required>
+        </div>
+        <div class="form-group">
+          <label for="registerForm_orgType">Organization Type</label>
+          <select class="form-control" id="registerForm_orgType">
+            <option value="manufacturer">Manufacturer</option>
+            <option value="distributor">Distributor</option>
+            <option value="dispenser">Dispenser</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="registerForm_orgAddr">Organization Address</label>
+          <input type="text" class="form-control" id="registerForm_orgAddr" placeholder="Address of your organization" required>
+        </div>
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div id="registrationSuccessfulText">
+      <h3>
+        <b>We have received your application!</b>
+      </h3>
+      <br>
+      <h4>Application ID :
+        <b>{{trackingId}}</b>
+      </h4>
+      <br>
+      <h4 class="text-left">You need to visit the
+        <b>
+          <u>Ministry of Drug Counterfeit Detection</u>
+        </b> office within
+        <b>2 weeks</b> from now in person with the below mentioned documents for verification purpose. Your account will be
+        activated only after passing the verification step.
+        <br>
+        <br>
+        <ol>
+          <li>Document A</li>
+          <li>Document B</li>
+          <li>Document C</li>
+        </ol>
+      </h4>
+      <br>
+      <br> Return to
+      <u class="text-center">
+        <a class="changeTemplate" data-template="login" href="#">
+          Home
+        </a>
+      </u>
+    </div>
+  </div>
+</template>
