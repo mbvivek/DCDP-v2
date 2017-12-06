@@ -64,11 +64,22 @@ createOrganizationContract = function(
       from: web3.eth.accounts[0],
       gas: 4700000
     })
-    .then(function(contractInstance) {
-      if (contractInstance) {
-        _onSuccess(contractInstance);
+    .then(function(instance) {
+      if (instance) {
+        contract.options.address = instance.options.address;
+        watchForEvents(contract);
+        _onSuccess(instance);
       } else {
         _onFailure();
       }
     });
+};
+
+//watch out for events
+var watchForEvents = function(contract) {
+  contract.getPastEvents("OrganizationCreated").then(function(events) {
+    for (let event of events) {
+      addToLog(event);
+    }
+  });
 };

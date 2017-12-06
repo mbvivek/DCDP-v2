@@ -5,6 +5,10 @@ import "./main.html";
 if (Meteor.isClient) {
   Session.setDefault("template", "login");
 
+  Template.body.onCreated(function() {});
+
+  Template.body.onRendered(function() {});
+
   Template.body.events({
     "click .changeTemplate"(event) {
       Session.set("template", event.target.getAttribute("data-template"));
@@ -54,5 +58,18 @@ if (Meteor.isClient) {
           $(this).addClass("hidden");
         });
     }, 2500);
+  };
+
+  getBusiness = function() {
+    if (localStorage.business == "") {
+      console.log("initializing localStrorage");
+      var business = { logs: [], pendingApprovals: { organizations: [] } };
+      localStorage.business = JSON.stringify(business);
+    }
+    return JSON.parse(localStorage.business);
+  };
+
+  saveBusiness = function(business) {
+    localStorage.business = JSON.stringify(business);
   };
 }

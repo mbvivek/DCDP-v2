@@ -9,4 +9,3 @@ uport = new Connect("Drug Counterfeit Detection Portal", {
 });
 
 console.log("uport initialized..");
-console.log(uport);
