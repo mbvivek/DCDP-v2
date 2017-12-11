@@ -1,0 +1,34 @@
+<template name="options">
+
+	<ul class="nav nav-pills">
+		<li role="presentation" class="active">
+			<a href="#" data-workarea="dashboard">Dashboard</a>
+		</li>
+		{{#if isEmployeeOfSystemAdminOrg}}
+		<li role="presentation">
+			<a href="#" data-workarea="manageApprovals">Manage Approvals</a>
+		</li>
+		{{#if isOrgAdmin}}
+		<li role="presentation">
+			<a href="#" data-workarea="manageOrganization">Manage Organization</a>
+		</li>
+		{{/if}} {{#if isDeptAdmin}}
+		<li role="presentation">
+			<a href="#" data-workarea="manageDepartment">Manage Department</a>
+		</li>
+		{{/if}} {{else}}
+		<li role="presentation">
+			<a href="#">Manage Medication</a>
+		</li>
+		{{#if isOrgAdmin}}
+		<li role="presentation">
+			<a href="#">Manage Organization</a>
+		</li>
+		{{/if}} {{#if isDeptAdmin}}
+		<li role="presentation">
+			<a href="#">Manage Department</a>
+		</li>
+		{{/if}} {{/if}}
+	</ul>
+	<hr>
+</template>

@@ -1,0 +1,26 @@
+<template name="userInfo">
+  <div class="row">
+    <div class="media pull-left col-lg-10 col-md-10">
+      <div class="media-left">
+        <img class="media-object" width="auto" height="80px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-A5EDjEfBzo4QehbOUg_05cSh4WijddYsSiH1VerrsW-74_4Z"
+          alt="Profile Pic">
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Welcome
+          <b>{{user.user.name}}</b>
+        </h4>
+        <h5>Role:
+          <b>{{user.role.role}}</b>
+          <br> Organization:
+          <b>{{user.org.name}}</b>
+          <br> Department:
+          <b>{{user.dept.name}}</b>
+        </h5>
+      </div>
+    </div>
+    <div class="pull-right col-lg-2 col-md-2">
+      <button type="button" class="btn btn-danger">Logout</button>
+    </div>
+  </div>
+  <hr>
+</template>

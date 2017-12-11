@@ -41,7 +41,7 @@ if (Meteor.isClient) {
         .slideUp(400, function() {
           $(this).addClass("hidden");
         });
-    }, 2500);
+    }, 3000);
   };
 
   successAlert = function(message) {
@@ -57,7 +57,7 @@ if (Meteor.isClient) {
         .slideUp(400, function() {
           $(this).addClass("hidden");
         });
-    }, 2500);
+    }, 3000);
   };
 
   getBusiness = function() {
@@ -71,5 +71,15 @@ if (Meteor.isClient) {
 
   saveBusiness = function(business) {
     localStorage.business = JSON.stringify(business);
+  };
+
+  getUserInfo = function() {
+    var userInfo = Session.get("userInfo");
+    if (userInfo == undefined) {
+      warningAlert("Session Invalid! Please login again.");
+      Session.set("template", "login");
+    } else {
+      return userInfo;
+    }
   };
 }

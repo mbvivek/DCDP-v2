@@ -1,4 +1,5 @@
 import { Template } from "meteor/templating";
+var SHA3 = require("crypto-js/sha3");
 
 var template;
 
@@ -31,20 +32,27 @@ if (Meteor.isClient) {
         orgType: orgType,
         orgAddr: orgAddr,
         adminName: adminName,
-        adminPK: adminPK
+        adminPK: adminPK,
+        trackingId: SHA3("" + new Date().getTime() + orgName + orgType)
+          .toString()
+          .toUpperCase(),
+        isApproved: false,
+        approvedBy: null,
+        approvedOn: null,
+        time: new Date()
       };
-      console.log(data);
 
-      //create user
-      createUser(adminName, adminPK);
+      addToPendingApprovals(data);
 
-      //create organization
-      createOrganization(orgName, orgType, orgAddr, adminName, adminPK);
+      template.trackingId.set(data.trackingId);
+      $("#registerForm").hide();
+      $("#registrationSuccessfulText").show();
     }
   });
   Template.register.helpers({
     trackingId: function() {
       var id = template.trackingId.get();
+      console.log(id);
       return id.substring(id.length - 6, id.length);
     }
   });
@@ -72,56 +80,10 @@ if (Meteor.isClient) {
         $("#registerForm_adminPK").val(userProfile.publicKey);
       });
   };
-
-  var createOrganizationContractOnSuccess = function(orgInstance) {
-    console.log(
-      "Organization Contract created.. " + orgInstance.options.address
-    );
-    template.trackingId.set(orgInstance.options.address);
-    $("#registerForm").hide();
-    $("#registrationSuccessfulText").show();
-  };
-
-  var createOrganizationContractOnFailure = function() {
-    warningAlert("System Error! Please try again later.");
-  };
-
-  var createOrganization = function(
-    orgName,
-    orgType,
-    orgAddr,
-    adminName,
-    adminPK
-  ) {
-    var approver = "SYSTEM";
-    createOrganizationContract(
-      orgName,
-      orgType,
-      orgAddr,
-      adminName,
-      adminPK,
-      approver,
-      createOrganizationContractOnSuccess,
-      createOrganizationContractOnFailure
-    );
-  };
-
-  var createUserContractOnSuccess = function(userInstance) {
-    console.log("User Contract created.. " + userInstance.options.address);
-  };
-
-  var createUserContractOnFailure = function() {
-    console.log("User Contract failed..");
-  };
-
-  var createUser = function(name, PK, approver) {
-    var approver = "SYSTEM";
-    createUserContract(
-      name,
-      PK,
-      approver,
-      createUserContractOnSuccess,
-      createUserContractOnFailure
-    );
-  };
 }
+
+var addToPendingApprovals = function(data) {
+  var business = getBusiness();
+  business.pendingApprovals.organizations.push(data);
+  saveBusiness(business);
+};

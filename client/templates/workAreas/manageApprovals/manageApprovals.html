@@ -1,0 +1,30 @@
+<template name="manageApprovals">
+	<h4>
+		<b>Manage Approvals</b>
+	</h4>
+	<div class="table-responsive">
+		<table class="table">
+			<tr>
+				<th>Tracking ID</th>
+				<th>Created On</th>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Admin Name</th>
+				<th>Actions</th>
+			</tr>
+			{{#each org in orgsForApproval}}
+			<tr>
+				<td>{{shortTrackingId(org.trackingId)}}</td>
+				<td>{{shortDate(org.time)}}</td>
+				<td>{{org.orgName}}</td>
+				<td>{{org.orgType}}</td>
+				<td>{{org.adminName}}</td>
+				<td>
+					<button class="btn btn-sm btn-info .view" data-trackingid="{{trackingId}}">View/Approve</button>
+					<button class="btn btn-sm btn-danger .reject">Reject</button>
+				</td>
+			</tr>
+			{{/each}}
+		</table>
+	</div>
+</template>
