@@ -3,28 +3,116 @@
 		<b>Manage Approvals</b>
 	</h4>
 	<div class="table-responsive">
-		<table class="table">
-			<tr>
-				<th>Tracking ID</th>
-				<th>Created On</th>
-				<th>Name</th>
-				<th>Type</th>
-				<th>Admin Name</th>
-				<th>Actions</th>
-			</tr>
-			{{#each org in orgsForApproval}}
-			<tr>
-				<td>{{shortTrackingId(org.trackingId)}}</td>
-				<td>{{shortDate(org.time)}}</td>
-				<td>{{org.orgName}}</td>
-				<td>{{org.orgType}}</td>
-				<td>{{org.adminName}}</td>
-				<td>
-					<button class="btn btn-sm btn-info .view" data-trackingid="{{trackingId}}">View/Approve</button>
-					<button class="btn btn-sm btn-danger .reject">Reject</button>
-				</td>
-			</tr>
-			{{/each}}
+		<table class="table table-bordered table-hover">
+			<tbody>
+				<tr>
+					<th>Tracking ID</th>
+					<th>Created On</th>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Admin Name</th>
+					<th>Actions</th>
+				</tr>
+				{{#each org in orgsForApproval}}
+				<tr>
+					<td>{{shortTrackingId(org.trackingId)}}</td>
+					<td>{{shortDate(org.time)}}</td>
+					<td>{{org.orgName}}</td>
+					<td>{{org.orgType}}</td>
+					<td>{{org.adminName}}</td>
+					<td>
+						<button class="btn btn-sm btn-info viewOrgBtn" data-trackingid="{{trackingId}}">View/Approve</button>
+						<button class="btn btn-sm btn-danger rejectOrgBtn">Reject</button>
+					</td>
+				</tr>
+				{{/each}}</tbody>
 		</table>
+		<div id="viewOrgModal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-md" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">
+							<b>View / Approve Organization</b>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form id="approveOrgForm">
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label for="approveOrgForm_userName">Admin Name</label>
+									<input type="text" class="form-control" id="approveOrgForm_adminName" value={{selectedOrg.adminName}} readonly required>
+								</div>
+								<div class="form-group">
+									<label for="approveOrgForm_userPK">Admin Public Key</label>
+									<input type="text" class="form-control" id="approveOrgForm_adminPK" value={{selectedOrg.adminPK}} readonly required>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-group">
+									<label for="approveOrgForm_orgName">Organization Name</label>
+									<input type="text" class="form-control" id="approveOrgForm_orgName" value={{selectedOrg.orgName}} required>
+								</div>
+								<div class="form-group">
+									<label for="approveOrgForm_orgType">Organization Type</label>
+									<select class="form-control" id="approveOrgForm_orgType">
+										<option value="manufacturer">Manufacturer</option>
+										<option value="distributor">Distributor</option>
+										<option value="dispenser">Dispenser</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="approveOrgForm_orgAddr">Organization Address</label>
+									<input type="text" class="form-control" id="approveOrgForm_orgAddr" value="{{selectedOrg.orgAddr}}" required>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<hr>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input id="approveFormCheckBox" type="checkbox"> I have clearly verified the above information against the original documents and approving this organization.
+									</label>
+								</div>
+							</div>
+							<hr>
+							<button id="approveFormSubmitBtn" type="submit" class="btn btn-primary">Approve</button>
+						</form>
+						<div id="approveFormMessagesDiv">
+							<ol>
+								{{#each msg in messages}}
+								<li>
+									{{#if msg.success}} {{msg.msg}}
+									<i class="fa fa-check" style="color:green" aria-hidden="true"></i>
+									{{else}} {{msg.msg}}
+									<i class="fa fa-times" style="color:red" aria-hidden="true"></i>
+									{{/if}}
+								</li>
+								{{/each}}
+							</ol>
+							{{#if onSuccessInfo.success}}
+							<br>
+							<div class="text-center">
+								<h4>Success!</h4>
+								<p>
+									<b>{{onSuccessInfo.org.orgName}}</b> organization was created successfully.
+									<br>
+									<b>{{onSuccessInfo.user.name}}</b> is the default admin of the organization.
+									<br>
+									<br> Approved by:
+									<b>{{onSuccessInfo.approver}}</b>
+								</p>
+							</div>
+							{{/if}}
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
