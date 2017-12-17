@@ -1,6 +1,14 @@
 import { Template } from "meteor/templating";
 
 if (Meteor.isClient) {
+  FlowRouter.route("/login", {
+    name: "Login",
+    action(params, queryParams) {
+      Session.set("template", "register");
+      console.log("Looking at Login?");
+    }
+  });
+
   Template.login.onCreated(function() {
     requestCredentials();
   });
@@ -33,8 +41,27 @@ if (Meteor.isClient) {
       )
       .then(userProfile => {
         console.log("logging in..");
+        console.log(userProfile);
         //process login
-        processLogin(userProfile.publicKey);
+        //processLogin(userProfile.publicKey);
+
+        var cred = {
+          sub: userProfile.address,
+          claim: { message: "Hello!" }
+        };
+        uport.attestCredentials(cred).then(res => {
+          // response okay, received in uPort app
+          console.log(res);
+          alert("Success!");
+
+          const req = {
+            requested: ["name"],
+            verified: ["message"]
+          };
+          uport.requestCredentials(req).then(credentials => {
+            console.log(credentials);
+          });
+        });
       });
   };
 }

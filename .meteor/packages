@@ -23,3 +23,4 @@ session
 twbs:bootstrap
 jquery
 fortawesome:fontawesome
+kadira:flow-router

@@ -1,29 +1,10 @@
 if (Meteor.isClient) {
-  var org;
   var templateInstance;
   Template.manageApprovals.onCreated(function() {
     templateInstance = Template.instance();
     this.selectedOrg = new ReactiveVar(null);
     this.messages = new ReactiveVar([]);
     this.onSuccessInfo = new ReactiveVar(null);
-    org = {
-      isApproved: false,
-      approverPK: null,
-      approvedOn: null,
-      time: "Sat Dec 09 2017 19:29:00 GMT-0500 (Eastern Standard Time)",
-      orgName: "ABC Company",
-      orgType: "dispenser",
-      orgAddr: "Boston",
-      adminName: "Vivek",
-      adminPK:
-        "0x041ff2e218d38e878be8444b4c5bcc8cdfe270246dff6d393f82301e3ad939bfbc97783aa61d7f64ab068c23c57082a5978620991b63a574e1555eaa4737a7c5c1",
-      trackingId:
-        "B673E78E9035C3DEC3AE4D96173674343FA8D0D96C34E2ADA383D5BC02104E41A6323CAA7351AF90B5AC1FEA6FCD2B53B386EEAEEC8C0A2A0633D32375866096"
-    };
-    var business = getBusiness();
-    business.pendingApprovals.organizations = [];
-    business.pendingApprovals.organizations.push(org);
-    saveBusiness(business);
   });
   Template.manageApprovals.onRendered(function() {
     $("#approveFormSubmitBtn").addClass("disabled");
@@ -271,6 +252,9 @@ if (Meteor.isClient) {
     },
     "click .viewOrgBtn"(event) {
       $("#approveOrgForm").show();
+      var org = null;
+      console.log(event);
+      return;
       Template.instance().selectedOrg.set(org);
       Template.instance().onSuccessInfo.set(null);
       $("#approveOrgForm_orgType").val(org.orgType);
@@ -294,7 +278,13 @@ if (Meteor.isClient) {
       return Template.instance().selectedOrg.get();
     },
     orgsForApproval: function() {
-      return getBusiness().pendingApprovals.organizations;
+      var orgs = [];
+      for (let org of getBusiness().pendingApprovals.organizations) {
+        if (!org.isApproved) {
+          orgs.push(org);
+        }
+      }
+      return orgs;
     },
     shortTrackingId: function(trackingId) {
       return trackingId.substring(trackingId.length - 6, trackingId.length);
@@ -312,4 +302,15 @@ if (Meteor.isClient) {
       return JSON.stringify(json, null, 2);
     }
   });
+
+  var getOrgByTrackingId = function(id) {
+    var selectedOrg = null;
+    for (let org of getBusiness().pendingApprovals.organizations) {
+      if (org.trackingId == id) {
+        selectedOrg = org;
+        break;
+      }
+    }
+    return selectedOrg;
+  };
 }
