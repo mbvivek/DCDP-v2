@@ -1,18 +1,8 @@
 import { Template } from "meteor/templating";
 
-var user;
-
 if (Meteor.isClient) {
-  Template.home.onCreated(function() {
-    userInfo = getUserInfo();
-  });
-  Template.home.onRendered(function() {
-    console.log(userInfo);
-  });
+  Template.home.onCreated(function() {});
+  Template.home.onRendered(function() {});
   Template.home.events({});
-  Template.home.helpers({
-    user: function() {
-      return user;
-    }
-  });
+  Template.home.helpers({});
 }

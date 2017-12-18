@@ -26,7 +26,8 @@ if (Meteor.isClient) {
     uport
       .requestCredentials(
         {
-          requested: ["name"]
+          requested: ["name"],
+          verified:["DCDP_ID"]
         },
         uri => {
           const qr = KJUA({
@@ -43,25 +44,26 @@ if (Meteor.isClient) {
         console.log("logging in..");
         console.log(userProfile);
         //process login
-        //processLogin(userProfile.publicKey);
+        processLogin(userProfile.publicKey);
 
-        var cred = {
-          sub: userProfile.address,
-          claim: { message: "Hello!" }
-        };
-        uport.attestCredentials(cred).then(res => {
-          // response okay, received in uPort app
-          console.log(res);
-          alert("Success!");
+        // var cred = {
+        //   sub: userProfile.address,
+        //   claim: { message: "Hello!" }
+        // };
+        // uport.attestCredentials(cred).then(res => {
+        //   // response okay, received in uPort app
+        //   console.log(res);
+        //   alert("Success!");
 
-          const req = {
-            requested: ["name"],
-            verified: ["message"]
-          };
-          uport.requestCredentials(req).then(credentials => {
-            console.log(credentials);
-          });
-        });
+        //   const req = {
+        //     requested: ["name"],
+        //     verified: ["message"]
+        //   };
+        //   uport.requestCredentials(req).then(credentials => {
+        //     console.log(credentials);
+        //   });
+        // });
+
       });
   };
 }
@@ -73,6 +75,8 @@ var processLogin = function(PK) {
   //3. Get Department from Role
   //4. Get Organization from Department
   //5. If all are valid, navigate to Home page
+
+  console.log("logging in..");
 
   var success = function() {
     successAlert("Success!");

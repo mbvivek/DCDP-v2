@@ -82,4 +82,9 @@ if (Meteor.isClient) {
       return userInfo;
     }
   };
+
+  clearUserInfo = function() {
+    Session.set("userInfo", undefined);
+    return;
+  };
 }

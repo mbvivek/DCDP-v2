@@ -15,35 +15,35 @@ if (Meteor.isClient) {
   Template.register.events({
     "submit #registerForm"(event) {
       event.preventDefault();
-      //var adminName = $("#registerForm_adminName").val();
-      var adminName = "Vivek";
-      //var adminPK = $("#registerForm_adminPK").val();
-      var adminPK =
-        "0x041ff2e218d38e878be8444b4c5bcc8cdfe270246dff6d393f82301e3ad939bfbc97783aa61d7f64ab068c23c57082a5978620991b63a574e1555eaa4737a7c5c1";
-      if (adminName == "" || adminPK == "") {
+      var adminName = $("#registerForm_adminName").val();
+      var adminUportAddr = $("#registerForm_adminUportAddr").val();
+      var adminPK = $("#registerForm_adminPK").val();
+      if (adminName == "" || adminPK == "" || adminUportAddr == "") {
         warningAlert("Admin Details are required");
+        return;
       }
       var orgName = $("#registerForm_orgName").val();
       var orgType = $("#registerForm_orgType").val();
       var orgAddr = $("#registerForm_orgAddr").val();
-
       var data = {
         orgName: orgName,
         orgType: orgType,
         orgAddr: orgAddr,
         adminName: adminName,
         adminPK: adminPK,
+        adminUportAddr: adminUportAddr,
         trackingId: SHA3("" + new Date().getTime() + orgName + orgType)
           .toString()
           .toUpperCase(),
         isApproved: false,
         approvedBy: null,
         approvedOn: null,
+        isRejected: false,
+        rejectionReason: null,
+        rejectedOn: null,
         time: new Date()
       };
-
       addToPendingApprovals(data);
-
       template.trackingId.set(data.trackingId);
       $("#registerForm").hide();
       $("#registrationSuccessfulText").show();
@@ -77,6 +77,7 @@ if (Meteor.isClient) {
       .then(userProfile => {
         //get the credentials
         $("#registerForm_adminName").val(userProfile.name);
+        $("#registerForm_adminUportAddr").val(userProfile.address);
         $("#registerForm_adminPK").val(userProfile.publicKey);
       });
   };

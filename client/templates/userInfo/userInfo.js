@@ -9,7 +9,12 @@ if (Meteor.isClient) {
   Template.userInfo.onRendered(function() {
     console.log(user);
   });
-  Template.userInfo.events({});
+  Template.userInfo.events({
+    "click #logoutBtn"(event) {
+      clearUserInfo();
+      Session.set("template", "login");
+    }
+  });
   Template.userInfo.helpers({
     user: function() {
       return user;
